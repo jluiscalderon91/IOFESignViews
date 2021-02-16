@@ -1,0 +1,76 @@
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 2px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+}
+
+table * {
+  position: relative;
+}
+
+table td, table th {
+  padding-left: 8px;
+}
+
+table thead tr {
+  height: 40px;
+  background: #23a940;
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+tbody tr {
+  color: #343434;
+  line-height: 1.2;
+  font-weight: unset;
+  text-align: center;
+}
+
+tbody tr:hover {
+  color: #555555;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.custom-width-select {
+  max-width: 270px;
+}
+
+.custom-font-size-table-header, .custom-font-size-table-body {
+  font-size: 14px !important;
+}
+
+.custom-table-height {
+  min-height: 510px !important;
+}
+
+.custom-padding-1 {
+  padding-left: 25px;
+}
+
+.custom-padding-2 {
+  padding-left: 50px;
+}
+
+.custom-badge-attach-sent {
+  color: white;
+  background-color: darkorange;
+}
+
+.custom-badge-modified {
+  color: white;
+  background-color: purple;
+}

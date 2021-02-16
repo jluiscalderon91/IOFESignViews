@@ -1,0 +1,101 @@
+<div class="mt-2">
+  <div class="row">
+    <div class="col-md-10 w-100">
+      <h4>{{title}}</h4>
+    </div>
+    <div class="col-md-2">
+      <button type="button"
+              align="flex-end" class="btn btn-outline-primary w-100"
+              *ngIf="hasAuthority('own:job:add')"
+              (click)="openAddModal()">
+        <i class="fa fa-plus"></i> Agregar
+      </button>
+    </div>
+  </div>
+</div>
+<div class="form-inline mt-2">
+  <label class="font-weight-bold" *ngIf="hasRole(ROLE_SUPERADMIN)">
+    Partner:
+  </label>
+  <select *ngIf="hasRole(ROLE_SUPERADMIN)"
+          class="form-control ml-1 mr-2 custom-width-select"
+          [(ngModel)]="partnerSelected"
+          (ngModelChange)="reloadJobs0()">
+    <option *ngFor="let partner of partners" [ngValue]="partner">{{partner.name}}</option>
+  </select>
+  <label class="font-weight-bold" *ngIf="hasRole(ROLE_PARTNER) || hasRole(ROLE_SUPERADMIN)">Empresa:</label>
+  <select *ngIf="hasRole(ROLE_PARTNER) || hasRole(ROLE_SUPERADMIN)"
+          class="form-control ml-1 mr-2 custom-width-select"
+          [(ngModel)]="enterpriseSelected"
+          (ngModelChange)="reloadJobs()">
+    <option *ngFor="let enterprise of enterprises" [ngValue]="enterprise">{{enterprise.name}}</option>
+  </select>
+</div>
+<div class="table-responsive mt-2 mb-2 custom-table-height">
+  <table class="table-sm">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)">Empresa</th>
+      <th scope="col">Descripción</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Acción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let job of jobs; let index=index">
+      <th scope="row">{{(page.number * 10) + index + 1}}</th>
+      <td *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)">{{job._more.enterpriseName}}</td>
+      <td>{{job.description}}</td>
+      <td>{{job.createAt | dateformat}}</td>
+      <td><span class="{{!job.active? 'badge badge-danger':''}}">{{job.active ? 'Activo' : 'Inactivo'}}</span></td>
+      <td>
+        <div class="dropdown">
+          <button type="button" class="btn btn-default " id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item poniter"
+                    *ngIf="hasAuthority('own:job:edit')"
+                    (click)="openModalEdit(job)">
+              <i class="fa fa-pen"></i>Editar
+            </button>
+            <button class="dropdown-item pointer"
+                    *ngIf="hasAuthority('own:job:delete')"
+                    (click)="openModalDelete(job)">
+              <i class="fa fa-trash"></i> Eliminar
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<nav aria-label="Page navigation">
+  <div class="row">
+    <div class="col-md-3">
+      Total de registros: {{jobs.length + (page.number * page.size)}} de {{page.totalElements}}
+    </div>
+    <div class="col-md-9">
+      <ul class="pagination justify-content-end text-center">
+        <li class="page-item btn-paged-ends {{page.number == 0 ? 'disabled' : ''}}">
+          <a class="page-link" tabindex="-1" aria-disabled="true" (click)="loadJobs(enumPage.First)">Primera</a>
+        </li>
+        <li class="page-item btn-paged-medium text-center {{page.number == 0 ? 'disabled' : ''}}">
+          <a class="page-link" tabindex="-1" aria-disabled="true"
+             (click)="loadJobs(enumPage.Previous)">Anterior</a>
+        </li>
+        <li class="page-item btn-paged-medium text-center {{page.number == (page.totalPages - 1) || page.totalPages === 0 ? 'disabled':''}}">
+          <a class="page-link" (click)="loadJobs(enumPage.Next)">Siguiente</a>
+        </li>
+        <li class="page-item btn-paged-ends text-center {{page.number == (page.totalPages - 1) || page.totalPages === 0 ? 'disabled':''}}">
+          <a class="page-link btn-paged-ends" (click)="loadJobs(enumPage.Last)">Última</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<app-loading *ngIf="loading"></app-loading>

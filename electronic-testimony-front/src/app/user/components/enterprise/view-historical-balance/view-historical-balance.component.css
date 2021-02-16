@@ -1,0 +1,10 @@
+table thead tr {
+  height: 25px !important;
+  background: #23a940;
+  color: white;
+}
+
+.scrollable {
+  height: 400px;
+  overflow-y: scroll;
+}

@@ -1,0 +1,38 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">Firmantes/Revisores</h4>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Empresa</th>
+        <th scope="col">Acción</th>
+        <th scope="col">Persona</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let person of peopleReceived; let index = index">
+        <th scope="row">{{index + 1}}</th>
+        <td>{{person._more.enterpriseTradeNameView}}</td>
+        <td>
+          <span class="badge {{isSigner(person)?'badge-success':'badge-warning'}}">
+            {{getOperationDescription(person)}}
+          </span>
+        </td>
+        <td>{{person.fullname}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-primary w-100" (click)="cancel()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

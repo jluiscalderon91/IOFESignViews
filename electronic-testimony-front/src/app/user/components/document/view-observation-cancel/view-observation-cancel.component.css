@@ -1,0 +1,47 @@
+table thead tr {
+  height: 25px !important;
+  background: #23a940;
+  color: white;
+}
+
+.custom-col-0 {
+  width: 30px;
+}
+
+.custom-col-1 {
+  width: 85px;
+}
+
+.custom-col-2 {
+  width: 270px;
+}
+
+.custom-col-3 {
+  width: 150px;
+}
+
+.custom-col-4 {
+  width: 330px;
+}
+
+.custom-container-right-padding {
+  padding-right: 0px;
+}
+
+.custom-col-0, .custom-col-1, .custom-col-2, .custom-col-3 {
+  text-align: center;
+}
+
+.custom-font-size-table-header, .custom-font-size-table-body {
+  font-size: 14px !important;
+}
+
+.custom-col-0, .custom-col-1, .custom-col-2, .custom-col-3, .custom-col-4 {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.custom-badge-modified {
+  color: white;
+  background-color: purple;
+}

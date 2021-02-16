@@ -1,0 +1,164 @@
+<div class="mt-2">
+  <div class="row">
+    <div class="col-md-10 w-100">
+      <h4>{{title}}</h4>
+    </div>
+    <div class="col-md-2 text-right">
+      <button type="button" align="flex-end"
+              class="btn btn-outline-primary w-100"
+              *ngIf="hasAuthority('own:workflow:add')"
+              (click)="openModalAdd()">
+        <i class="fa fa-plus"></i> Agregar
+      </button>
+    </div>
+  </div>
+</div>
+<div class="form-inline mt-2">
+  <label class="font-weight-bold" *ngIf="hasRole(ROLE_SUPERADMIN)">
+    Partner:
+  </label>
+  <select *ngIf="hasRole(ROLE_SUPERADMIN)"
+          class="form-control ml-1 mr-2 custom-width-select"
+          [(ngModel)]="partnerSelected"
+          (ngModelChange)="reloadWorkflows0()">
+    <option *ngFor="let partner of partners" [ngValue]="partner">{{partner.name}}</option>
+  </select>
+  <label class="font-weight-bold" *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)">
+    Empresa:
+  </label>
+  <select *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)"
+          class="form-control ml-1 mr-2 custom-width-select"
+          [(ngModel)]="enterpriseSelected"
+          (ngModelChange)="reloadWorkflows()">
+    <option *ngFor="let enterprise of enterprises" [ngValue]="enterprise">{{enterprise.name}}</option>
+  </select>
+  <label class="font-weight-bold">
+    Descripción:
+  </label>
+  <input type="text"
+         id="searchInput"
+         class="form-control ml-1 mr-2"
+         placeholder="Ingrese para buscar..."
+         [(ngModel)]="term2Search"
+         (keyup.enter)="search()">
+  <button type="button"
+          class="btn btn-outline-primary"
+          [disabled]="term2Search === undefined"
+          (click)="search()">Buscar
+  </button>
+</div>
+<div class="table-responsive mt-2 mb-2 custom-table-height">
+  <table class="table-sm">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Empresa</th>
+      <th scope="col">Flujo</th>
+      <th scope="col">Tipo</th>
+      <th scope="col">Firma</th>
+      <th scope="col">Dinámico</th>
+      <th scope="col">Máx. de partic.</th>
+      <th scope="col">Listo para usar</th>
+      <th scope="col">Integ. SIE</th>
+      <th scope="col">Requisito</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Acción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let workflow of workflows; let index=index">
+      <th><b>{{(page.number * 10) + index + 1}}</b></th>
+      <td>{{workflow._more.enterpriseTradeName}}</td>
+      <td>{{workflow.description}}</td>
+      <td>{{getWorkflowtypeDesc(workflow)}}</td>
+      <td><span>{{workflow.batch ? 'En lote' : 'Uno a uno'}}</span></td>
+      <td>
+        <span class="badge {{isDynamic(workflow)? ' badge-success':' badge-secondary'}}">
+          {{isDynamic(workflow) ? 'Sí' : 'No'}}
+        </span>
+      </td>
+      <td>{{workflow.maxParticipants}}</td>
+      <td>
+        <span class="{{!ready2Use(workflow)? 'badge badge-danger':'badge badge-success'}}">
+          {{ready2Use(workflow) ? 'Sí' : 'No'}}
+        </span>
+      </td>
+      <td>
+        <span class="{{requiredSieConfig(workflow)? 'badge badge-info':'badge badge-secondary'}}">
+          {{requiredSieConfig(workflow) ? 'Sí' : 'No'}}
+        </span>
+      </td>
+      <td>
+        <span *ngIf="!completed(workflow)" class="badge badge-dark">
+          Participante
+        </span>
+        <span *ngIf="requiredSieConfig(workflow)" class="{{!sieConfigured(workflow)? 'badge badge-warning':''}}">
+          {{!sieConfigured(workflow) ? 'Config. SIE' : '-'}}
+        </span>
+        <span *ngIf="!requiredSieConfig(workflow) && completed(workflow)">
+          -
+        </span>
+      </td>
+      <td>{{workflow.createAt | dateformat}}</td>
+      <td>
+        <span
+          class="{{!workflow.active? 'badge badge-danger':''}}">{{workflow.active ? 'Activo' : 'Inactivo'}}</span></td>
+      <td>
+        <div class="dropdown">
+          <button type="button" class="btn btn-default " id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item poniter"
+                    *ngIf="hasAuthority('own:participant:add:workflow') && !isDynamic(workflow)"
+                    (click)="openModalAddParticipants(workflow)">
+              <i class="fa fa-user-plus"></i> Asignar participantes
+            </button>
+            <button class="dropdown-item poniter"
+                    *ngIf="hasAuthority('own:workflow:template:add') && hasAuthority('own:workflow:template:edit') && hasAuthority('own:workflow:template:get')"
+                    (click)="getParticipantsAndOpen(workflow)">
+              <i class="fa fa-crop"></i> Diseñar plantilla
+            </button>
+            <button class="dropdown-item poniter"
+                    *ngIf="hasAuthority('own:workflow:edit')"
+                    (click)="openModalEdit(workflow)">
+              <i class="fa fa-pen"></i> Editar
+            </button>
+            <button class="dropdown-item pointer"
+                    *ngIf="hasAuthority('own:workflow:delete')"
+                    (click)="delete(workflow)">
+              <i class="fa fa-trash"></i> Eliminar
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<nav aria-label="Page navigation">
+  <div class="row">
+    <div class="col-md-3">
+      Total de registros: {{workflows.length + (page.number * page.size)}} de {{page.totalElements}}
+    </div>
+    <div class="col-md-9">
+      <ul class="pagination justify-content-end text-center">
+        <li class="page-item btn-paged-ends {{page.number == 0 ? 'disabled' : ''}}">
+          <a class="page-link" tabindex="-1" aria-disabled="true" (click)="loadWorkflow(enumPage.First)">Primera</a>
+        </li>
+        <li class="page-item btn-paged-medium text-center {{page.number == 0 ? 'disabled' : ''}}">
+          <a class="page-link" tabindex="-1" aria-disabled="true" (click)="loadWorkflow(enumPage.Previous)">Anterior</a>
+        </li>
+        <li class="page-item btn-paged-medium text-center {{page.number == (page.totalPages - 1) || page.totalPages === 0 ? 'disabled':''}}">
+          <a class="page-link" (click)="loadWorkflow(enumPage.Next)">Siguiente</a>
+        </li>
+        <li class="page-item btn-paged-ends text-center {{page.number == (page.totalPages - 1) || page.totalPages === 0 ? 'disabled':''}}">
+          <a class="page-link btn-paged-ends" (click)="loadWorkflow(enumPage.Last)">Última</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<app-loading *ngIf="loading"></app-loading>

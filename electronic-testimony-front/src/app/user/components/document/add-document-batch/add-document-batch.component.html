@@ -1,0 +1,87 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <div class="text-right">
+      <button class="btn btn-outline-primary mt-2 mb-1"
+              type="button" (click)="addRow()">+ Agregar
+      </button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <app-alert-add-document></app-alert-add-document>
+    <form [formGroup]="documentForm">
+      <div class="row">
+        <div class="col">
+          <table class="table table-sm">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col" class="width-th-1">#</th>
+              <th scope="col" class="width-th-2">Flujo</th>
+              <th scope="col" class="width-th-6">Asunto</th>
+              <th scope="col" class="width-th-3">Archivo</th>
+              <th scope="col" class="width-th-4">Progreso</th>
+              <th scope="col" class="width-th-5"
+                  [hidden]="hideDeleteItemOnlyRecord">Acción
+              </th>
+            </tr>
+            </thead>
+            <tbody formArrayName="arrayDocument">
+            <tr *ngFor="let group of arrayDocument.controls; let index= index" [formGroupName]="index">
+              <td>{{ index + 1}}</td>
+              <td>
+                <select id="workflowInput"
+                        class="form-control w-100"
+                        formControlName="workflow">
+                  <option *ngFor="let workflow of workflows" [ngValue]="workflow">{{workflow.description}}</option>
+                </select>
+              </td>
+              <td>
+                <input type="text" class="form-control w-100"
+                       formControlName="subject">
+              </td>
+              <td>
+                <div class="col padding-select-file content-file">
+                  <div class="custom-file content-file">
+                    <input type="file" class="custom-file-input w-100" accept="application/pdf"
+                           id="customFile{{index}}" (change)="changeStatus($event, index)">
+                    <div class="custom-file-label">
+                      <label for="customFile{{index}}">
+                        {{group.get('filename').value ? group.get('filename').value : 'Seleccione...'}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="progress form-group mt-2 ">
+                  <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                       [style.width.%]="getProgress(index)">
+                  </div>
+                </div>
+              </td>
+              <td class="text-center" [hidden]="hideDeleteItemOnlyRecord">
+                <i class="fa fa-times mt-2" [routerLink]="" (click)="deleteRow(index)"></i>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="btn-padding-dlg">
+          <button type="button" class="btn btn-outline-primary w-100" [disabled]="documentForm.invalid || loading"
+                  (click)="save()">Guardar
+          </button>
+        </div>
+        <div class="btn-padding-dlg">
+          <button type="button" class="btn btn-outline-danger w-100" (click)="cancel()">Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

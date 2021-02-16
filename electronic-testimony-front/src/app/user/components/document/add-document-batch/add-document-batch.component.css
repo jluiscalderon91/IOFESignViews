@@ -1,0 +1,108 @@
+@media screen and (max-width: 600px) {
+  table {
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr:nth-of-type(2n) {
+    background-color: inherit;
+  }
+
+  tr td:first-child {
+    background: #f0f0f0;
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+
+  tbody td {
+    display: block;
+    text-align: center;
+  }
+
+  tbody td:before {
+    content: attr(data-th);
+    display: block;
+    text-align: center;
+  }
+}
+
+.table {
+  border-spacing: 2px;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 4px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.table td {
+  padding-top: 4px;
+  padding-bottom: 0px;
+  margin: 0;
+  border: 0;
+}
+
+.form-control {
+  height: 38px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.table thead {
+  border-radius: 3px;
+}
+
+
+.width {
+  width: 160px;
+}
+
+.width-th-1 {
+  width: 2px
+}
+
+.width-th-2 {
+  width: 30px
+}
+
+.width-th-3 {
+  width: 120px
+}
+
+.width-th-4 {
+  width: 100px
+}
+
+.width-th-5 {
+  width: 1px
+}
+
+.width-th-6 {
+  width: 100px
+}
+
+.padding-filename {
+  padding-left: 4px;
+  margin: 0;
+  border: 0;
+  position: relative;
+}
+
+.padding-select-file {
+  padding-left: 1px;
+  padding-right: 0;
+  margin: 0;
+  border: 0;
+}
+
+.content-file {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display-inside: ruby-text;
+}

@@ -1,0 +1,5 @@
+.custom-input {
+  pointer-events: none;
+  cursor: default;
+  background-color: lightgray;
+}

@@ -1,0 +1,25 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">Eliminar empresa</h4>
+  </div>
+  <div class="modal-body">
+    <div>
+      <label class="custom-label">
+        ¿Esta seguro que quiere eliminar el registro?
+      </label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="col-3 btn-padding-dlg">
+          <button type="button" class="btn btn-outline-primary w-100" (click)="yes()">Si</button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-outline-secondary w-100" (click)="no()">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="loading"></app-loading>

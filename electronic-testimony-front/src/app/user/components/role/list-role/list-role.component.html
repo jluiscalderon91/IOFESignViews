@@ -1,0 +1,96 @@
+<div class="mt-2">
+  <div class="row">
+    <div class="col-md-10 w-100">
+      <h4>{{entityName}}</h4>
+    </div>
+    <div class="col-md-2">
+      <button type="button" align="flex-end"
+              class="btn btn-outline-primary w-100"
+              *ngIf="hasAuthority('own:role:add')"
+              (click)="openAddModal()">
+        <i class="fa fa-plus"></i> Agregar
+      </button>
+    </div>
+  </div>
+</div>
+<div class="table-responsive mt-2 mb-2 custom-table-height">
+  <table class="table-sm">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Abreviatura</th>
+      <th scope="col">Nombre</th>
+      <th scope="custom-width-col">Descripción</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Acción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let role of roles; let index=index">
+      <th scope="row">{{(page.number * 10) + index + 1}}</th>
+      <td>{{role.abbreviation}}</td>
+      <td>{{role.name}}</td>
+      <td class="custom-width-col">{{role.description}}</td>
+      <td>{{role.createAt | dateformat}}</td>
+      <td><span class="{{!role.active? 'badge badge-danger':''}}">{{role.active ? 'Activo' : 'Inactivo'}}</span></td>
+      <td>
+        <div class="dropdown" >
+          <button type="button"
+                  class="btn btn-default "
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false">
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item poniter"
+                    *ngIf="hasEditableOption(role) && hasAuthority('own:role:edit')"
+                    (click)="openModalEdit(role)">
+              <i class="fa fa-pen"></i> Editar
+            </button>
+            <button class="dropdown-item poniter"
+                    *ngIf="hasAuthority('own:role:edit:authority')"
+                    (click)="openModalAssignAuthority(role)">
+              <i class="fa fa-plus"></i> Establecer permisos
+            </button>
+            <button class="dropdown-item pointer"
+                    *ngIf="hasEditableOption(role) && hasAuthority('own:role:delete')"
+                    (click)="openModalDelete(role)">
+              <i class="fa fa-trash"></i> Eliminar
+            </button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<nav aria-label="Page navigation">
+  <div class="row">
+    <div class="col-md-3">
+      Total de registros: {{roles.length + (page.number * page.size)}} de {{page.totalElements}}
+    </div>
+    <div class="col-md-9">
+      <ul class="pagination justify-content-end text-center">
+        <li class="page-item btn-paged-ends {{page.number == 0 ? 'disabled' : ''}}">
+          <a class="page-link" tabindex="-1" aria-disabled="true" (click)="loadRoles(enumPage.First)">Primera</a>
+        </li>
+        <li class="page-item btn-paged-medium text-center {{page.number == 0 ? 'disabled' : ''}}">
+          <a class="page-link" tabindex="-1" aria-disabled="true"
+             (click)="loadRoles(enumPage.Previous)">Anterior</a>
+        </li>
+        <li
+          class="page-item btn-paged-medium text-center {{page.number == (page.totalPages - 1) || page.totalPages == 0 ? 'disabled':''}}">
+          <a class="page-link" (click)="loadRoles(enumPage.Next)">Siguiente</a>
+        </li>
+        <li
+          class="page-item btn-paged-ends text-center {{page.number == (page.totalPages - 1) || page.totalPages == 0 ? 'disabled':''}}">
+          <a class="page-link btn-paged-ends" (click)="loadRoles(enumPage.Last)">Última</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<app-loading *ngIf="loading"></app-loading>

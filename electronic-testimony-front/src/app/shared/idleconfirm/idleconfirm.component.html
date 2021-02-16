@@ -1,0 +1,35 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-1">
+          <span class="custom-span">
+          <i class="fas fa-exclamation-circle fa-2x text-warning"></i>
+        </span>
+      </div>
+      <div class="col-md-11">
+        {{body}}
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="col-6 btn-padding-dlg">
+          <button type="button" class="btn btn-outline-danger btn-custom-width btn-custom-align-left"
+                  (click)="logout()">
+            Cerrar sesión
+          </button>
+        </div>
+        <div class="col-6">
+          <button type="button" class="btn btn-outline-success btn-custom-width btn-custom-align-right"
+                  (click)="stay()">
+            Mantener sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

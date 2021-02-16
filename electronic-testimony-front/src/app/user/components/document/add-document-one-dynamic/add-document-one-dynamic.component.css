@@ -1,0 +1,38 @@
+.form-control-custom {
+  height: 25px !important;
+  padding-left: 0px !important;
+  padding-top: 0px !important;
+  background-color: transparent !important;
+  border: transparent !important;
+}
+
+table * {
+  position: relative;
+}
+
+table td, table th {
+  padding-left: 8px;
+}
+
+table thead tr {
+  height: 40px;
+  background: #23a940;
+  color: white;
+}
+
+tbody tr {
+  height: 20px;
+  font-size: 13px;
+  color: #343434;
+  line-height: 1.2;
+  font-weight: unset;
+  text-align: center;
+}
+
+.custom-top {
+  margin-top: -3px !important;
+}
+
+.custom-col-width {
+  width: 180px !important;
+}

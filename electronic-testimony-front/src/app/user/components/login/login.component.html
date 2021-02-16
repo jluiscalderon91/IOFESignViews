@@ -1,0 +1,33 @@
+<div class="login-form">
+  <form [formGroup]="userForm">
+    <h2 class="text-center">Inicio de sesión</h2>
+    <div class="form-group mt-1">
+      <input type="text"
+             class="form-control"
+             formControlName="username"
+             [(ngModel)]="user.username"
+             [class.is-invalid]="isInvalidControl('username')"
+             (keyup.enter)="login(user)"
+             placeholder="Usuario"
+             required="required">
+    </div>
+    <div class="form-group">
+      <input type="password"
+             class="form-control"
+             formControlName="password"
+             [(ngModel)]="user.password"
+             [class.is-invalid]="isInvalidControl('password')"
+             (keyup.enter)="login(user)"
+             placeholder="Contraseña"
+             required="required">
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn btn-primary btn-block" (click)="login(user)">Iniciar sesión</button>
+    </div>
+    <div class="text-center">
+<!--      <a [routerLink]="['/setuppassword']" [queryParams]="{hash1: 'abcd', hash2:'efgh'}">¿Has olvidado tu contraseña?</a>-->
+      <a [routerLink]="'/passwordrecovery'">¿Has olvidado tu contraseña?</a>
+    </div>
+  </form>
+</div>
+<app-loading *ngIf="loading"></app-loading>

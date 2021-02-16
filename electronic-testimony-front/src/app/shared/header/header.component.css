@@ -1,0 +1,61 @@
+.navbar-expand-sm {
+  height: 40px;
+}
+
+.social-part .fa {
+  padding-right: 10px;
+}
+
+ul li a {
+  margin-right: 20px;
+}
+
+.btn-circule {
+  height: 40px;
+  border-radius: 100px;
+}
+
+.btn {
+  height: 40px;
+}
+
+.dropdown-content {
+  right: 0;
+}
+
+.dropdown {
+  right: 0;
+  cursor: pointer;
+}
+
+.header-user {
+  color: #f0f0f0;
+  font-weight: bold;
+}
+
+.header-user-light {
+  color: #f0f0f0;
+}
+
+.card-body {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+.custom-size-icon {
+  font-size: 10px;
+}
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.custom-font-size-14 {
+  font-size: 14px;
+}
+
+h6 {
+  margin-bottom: 0px;
+}

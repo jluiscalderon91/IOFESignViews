@@ -1,0 +1,11 @@
+.btn-custom-width {
+  width: 150px;
+}
+
+.btn-custom-align-left {
+  float: left;
+}
+
+.btn-custom-align-right {
+  float: right;
+}

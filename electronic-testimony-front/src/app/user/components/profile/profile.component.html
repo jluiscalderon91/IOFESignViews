@@ -1,0 +1,180 @@
+<form [formGroup]="personForm">
+  <div class="row mt-2">
+    <div class="col-md-8 offset-md-2">
+      <div class="row mb-2">
+        <h4>{{title}}</h4>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Actualización de contraseña</h5>
+          Deberá ingresar una contraseña que contenga letras mayúsculas, minúsculas, números y al menos algún caracter
+          especial. La longitud deberá ser entre {{minLengthPassword}} y {{maxLengthPassword}} caracteres.
+        </div>
+        <div class="col-md-6">
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="oldPasswordInput">Contraseña actual</label>
+              <input type="password"
+                     class="form-control"
+                     id="oldPasswordInput"
+                     placeholder="Ingrese la actual contraseña"
+                     formControlName="oldPassword"
+                     [(ngModel)]="person.oldPassword"
+                     [class.is-invalid]="isInvalidControl('oldPassword')">
+              <small *ngIf="isInvalidControl('oldPassword')"
+                     class="text-danger">
+                {{getErrorMessageBy('oldPassword')}}
+              </small>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="newPasswordInput">Contraseña</label>
+              <input type="password"
+                     class="form-control"
+                     id="newPasswordInput"
+                     placeholder="Ingrese la nueva contraseña"
+                     formControlName="newPassword"
+                     [(ngModel)]="person.password"
+                     [class.is-invalid]="isInvalidControl('newPassword')"
+                     (keyup)="matchPasswords($event, 'repeatNewPassword')"
+                     [attr.disabled]="disablePassword ? '' : null">
+              <small *ngIf="isInvalidControl('newPassword')"
+                     class="text-danger">
+                {{getErrorMessageBy('newPassword')}}
+              </small>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="repeatNewPasswordInput">Repetir contraseña</label>
+              <input type="password"
+                     class="form-control"
+                     id="repeatNewPasswordInput"
+                     placeholder="Reingrese la nueva contraseña"
+                     formControlName="repeatNewPassword"
+                     [(ngModel)]="person.repeatNewPassword"
+                     [class.is-invalid]="isInvalidControl('repeatNewPassword')"
+                     (keyup)="matchPasswords($event, 'newPassword')"
+                     [attr.disabled]="disablePassword ? '' : null">
+              <small *ngIf="isInvalidControl('repeatNewPassword')"
+                     class="text-danger">
+                {{getErrorMessageBy('repeatNewPassword')}}
+              </small>
+              <small *ngIf="!areSamePasswords"
+                     class="text-danger">
+                <br *ngIf="isInvalidControl('repeatNewPassword')">
+                Las contraseñas no coinciden, por favor inténtelo una vez más.
+              </small>
+            </div>
+          </div>
+          <div class="form-row" style="float: right">
+            <div class="form-group col-md-2 custom-align-center">
+              <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                <input type="checkbox"
+                       class="custom-control-input"
+                       id="disablePasswordCheckbox"
+                       [checked]="!disablePassword"
+                       (click)="disablePasswordControls($event)">
+                <label class="custom-control-label" for="disablePasswordCheckbox">Editar</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Actualización de correo</h5>
+        </div>
+        <div class="col-md-6">
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="emailInput">Dirección de correo electrónico</label>
+              <input type="text" class="form-control"
+                     id="emailInput"
+                     placeholder="Ingrese el correo electrónico"
+                     [(ngModel)]="person.email"
+                     formControlName="email">
+              <small *ngIf="isInvalidControl('email')"
+                     class="text-danger">
+                {{getErrorMessageBy('email')}}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Otros datos</h5>
+        </div>
+        <div class="col-md-6">
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="cellphoneInput">Número de celular</label>
+              <input type="text" class="form-control"
+                     id="cellphoneInput"
+                     placeholder="Ingrese el número de celular"
+                     [(ngModel)]="person.cellphone"
+                     formControlName="cellphone">
+              <small *ngIf="isInvalidControl('cellphone')"
+                     class="text-danger">
+                {{getErrorMessageBy('cellphone')}}
+              </small>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label>Rúbrica</label>
+              <div class="custom-file content-file">
+                <input type="file"
+                       [disabled]="false"
+                       class="custom-file-input"
+                       accept="image/jpeg, image/png"
+                       alife-file-to-base64
+                       id="customRubricFile"
+                       (change)="readSelectedRubric($event)"
+                       (onFileChanged)="changeStatus2($event)">
+                <div class="custom-file-label">
+                  <label for="customRubricFile">
+                    {{personForm.get('rubricFilename2Show').value ? personForm.get('rubricFilename2Show').value : 'Seleccione...'}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row text-right">
+            <img [src]="defaultRubricSrc" #rubricPic style="{{styleDimensionsRubric}}" alt="Rubric">
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3" [hidden]="!REQUIRED_CAPTCHA">
+        <div class="col-md-6">
+          <h5>Verificación</h5>
+        </div>
+        <div class="col-md-6">
+          <div style="transform:scale(1.15);transform-origin:0;">
+            <re-captcha formControlName="recaptchaReactive"></re-captcha>
+          </div>
+          <small *ngIf="isInvalidControl('recaptchaReactive')"
+                 class="text-danger">
+            Es necesario completar satisfactoriamente el desafio Captcha
+          </small>
+        </div>
+      </div>
+      <div class="col-md-3 offset-md-9 mt-2">
+        <div class="row">
+          <div class="col-md-6 btn-save">
+            <button type="button" class="btn btn-outline-primary w-100" (click)="save()">Guardar</button>
+          </div>
+          <div class="col-md-6 btn-cancel">
+            <button type="button" class="btn btn-outline-danger w-100" (click)="cancel()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<app-loading *ngIf="loading"></app-loading>

@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+          aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon custom-size-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-lg-0">
+      <li class="nav-item">
+        <a class="nav-link">LOGO</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://iofesac.com/" target="_blank">Acerca de</a>
+      </li>
+      <li class="nav-item dropdown dmenu" *ngIf="isAuthenticated && hasAuthority('own:application:view:menu:administration')">
+        <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+          Administración
+        </a>
+        <div class="dropdown-menu sm-menu">
+          <a class="dropdown-item" [routerLink]="'enterprise'"
+             *ngIf="hasAuthority('own:enterprise:get:page')">Empresa</a>
+          <a class="dropdown-item" [routerLink]="'job'" *ngIf="hasAuthority('own:job:get:enterprise')">Cargo</a>
+          <a class="dropdown-item" [routerLink]="'person'" *ngIf="hasAuthority('own:person:get:page')">Persona</a>
+          <a class="dropdown-item" [routerLink]="'workflow'" *ngIf="hasAuthority('own:workflow:get:enterprise')">Flujo
+            de trabajo</a>
+          <a class="dropdown-item" [routerLink]="'siecrendential'"
+             *ngIf="hasAuthority('own:sie:get:credential:enterprise')">Credenciales SIE</a>
+          <a class="dropdown-item" [routerLink]="'role'" *ngIf="hasRole(ROLE_SUPERADMIN)">Roles</a>
+          <a class="dropdown-item" [routerLink]="'authority'" *ngIf="hasRole(ROLE_SUPERADMIN)">Permisos</a>
+          <a class="dropdown-item" [routerLink]="'view-balance'"
+             *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)">Saldos por cobrar</a>
+          <a class="dropdown-item" (click)="openModalViewHistoricalBalance()"
+             *ngIf="hasRole(ROLE_ADMIN) && hasConfigBalance">Historial de saldos</a>
+          <a class="dropdown-item" [routerLink]="'globalconfig'" *ngIf="hasRole(ROLE_SUPERADMIN)">Configuración
+            global</a>
+        </div>
+      </li>
+      <li class="nav-item"
+          *ngIf="isAuthenticated && hasAuthority('own:application:view:menu:documento') && !hasRole(ROLE_SUPERADMIN)">
+        <a class="nav-link" [routerLink]="'document'">Documento</a>
+      </li>
+      <li class="nav-item"
+          *ngIf="isAllowedViewShoppingcard">
+        <a class="nav-link" [routerLink]="'buy-balance'"><i class="fas fa-shopping-cart"></i>&nbsp;Comprar bolsas</a>
+      </li>
+    </ul>
+    <div class="form-inline">
+      <label class="header-user-light" *ngIf="isAllowedViewActualBalance">
+        <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
+        &nbsp;Saldo actual:&nbsp;{{actualBalance}}&nbsp;<small>{{coin}}</small>
+      </label>
+      <div class="nav-item dropdown-right dmenu" *ngIf="isAuthenticated">
+        <a class="nav-link" data-toggle="dropdown">
+          <button class="btn-sm btn btn-default dropdown-toggle header-user">
+            <i class="fa fa-user" aria-hidden="true"></i> Perfil
+          </button>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right sm-menu dropdown menu-items">
+          <div class="card-body">
+            <div class="user-name bold">
+              <h6>
+                {{profile.personName}}
+              </h6>
+            </div>
+            <div class="custom-font-size-14" *ngIf="existJob">
+              {{profile.jobDescription}}
+            </div>
+            <hr>
+            <div>
+              {{profile.enterpriseNameView}}
+            </div>
+            <div class="bold" *ngIf="hasRoles">
+              <h6 class="font-weight-bold">
+                {{role}}
+              </h6>
+            </div>
+          </div>
+          <hr>
+          <a class="dropdown-item" [routerLink]="'profile'">Configuración</a>
+          <hr>
+          <button class="dropdown-item" (click)="logout()">Cerrar sesión</button>
+        </div>
+      </div>
+      <div class="nav-item dropdown-right dmenu" *ngIf="!isAuthenticated">
+        <a class="nav-link" data-toggle="dropdown">
+          <button class="btn-sm btn btn-default header-user" (click)="navigateLogin()">
+            Iniciar sesion
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+<app-loading *ngIf="loading"></app-loading>

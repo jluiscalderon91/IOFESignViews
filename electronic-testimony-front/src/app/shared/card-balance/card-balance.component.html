@@ -1,0 +1,17 @@
+<div class="position custom-padding text-center">
+  <div class="card border-{{color}} mb-3" style="max-width: 18rem;">
+    <div class="card-header">Bolsa {{shoppingcard.quantity}}</div>
+    <div class="card-body text-{{color}}">
+      <h5 class="card-title">Bolsa de {{shoppingcard.quantity}}<small>{{coin}}</small></h5>
+      <p class="card-text">{{shoppingcard.description}}</p>
+      <h3>{{shoppingcard.quantity}}</h3><small>&nbsp;{{coin}}</small>&nbsp;por solo&nbsp;<small>S/.&nbsp;</small>
+      <h5>{{shoppingcard.price}}</h5>
+    </div>
+  </div>
+  <div class="text-center">
+    <button type="button"
+            class="btn btn-outline-{{color}}"
+            (click)="openBuyBalanceModal(shoppingcard)">Adquirir
+    </button>
+  </div>
+</div>

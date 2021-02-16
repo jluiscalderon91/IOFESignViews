@@ -1,0 +1,43 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead class="custom-font-size-table-header">
+      <tr>
+        <th scope="col" class="custom-col-0">#</th>
+        <th scope="col" class="custom-col-1">Tipo</th>
+        <th scope="col" class="custom-col-2">Realizado por</th>
+        <th scope="col" class="custom-col-3">Fecha</th>
+        <th scope="col" class="custom-col-4">Descripción</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let comment of comments; let index = index" class="custom-font-size-table-body">
+        <th scope="row" class="custom-col-0">{{index + 1}}</th>
+        <td class="custom-col-1">
+          <span class="badge {{getBadgeTextBy(comment)}}">
+            {{getCommentTypeTextBy(comment)}}
+           </span>
+        </td>
+        <td class="custom-col-2">{{comment.actioner}}</td>
+        <td class="custom-col-3">{{comment.createAt | dateformat}}</td>
+        <td class="custom-col-4">{{comment.description}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="col-2 custom-padding">
+          <button type="button" class="btn btn-outline-primary w-100" (click)="accept()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

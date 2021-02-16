@@ -1,0 +1,120 @@
+<div class="card mt-2">
+  <h5 class="card-header">Verificación de documento</h5>
+  <div class="card-body custom-background">
+    <form class="mb-2" [formGroup]="verifybycodeForm">
+      <div class="form-row">
+        <div class="col-md-2 mb-3">
+          <label for="verificationCodeInput">Código de verificación</label>
+        </div>
+        <div class="col-md-3 mb-3">
+          <input type="text"
+                 class="form-control"
+                 id="verificationCodeInput"
+                 formControlName="resumeHash"
+                 placeholder="Ingrese código"
+                 [(ngModel)]="resumeHashResource"
+                 (keyup)="cleanForm()"
+                 (keyup.enter)="verify()"
+                 [class.is-invalid]="isInvalidControl('resumeHash')">
+          <div class="invalid-feedback">
+            {{getErrorMessageBy('resumeHash')}}.
+          </div>
+        </div>
+        <div class="col-md-2 mb-3">
+          <button type="button" align="flex-end" class="btn btn-outline-primary" (click)="verify()">
+            <i class="fa fa-search"></i> Verificar
+          </button>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="!wrongVerification && !loading && isCanceled" class="alert alert-danger font-weight-bold" role="alert">
+      <i class="fa fa-exclamation-circle custom-icon-danger"></i> El documento se encuentra anulado.
+    </div>
+    <div *ngIf="!wrongVerification && !loading && isModified && !isReplacerFinished"
+         class="alert alert-danger font-weight-bold"
+         role="alert">
+      <i class="fa fa-exclamation-circle custom-icon-danger"></i>
+      El documento ha sido modificado y el que lo reemplazará está siendo procesado.
+    </div>
+    <div *ngIf="!wrongVerification && !loading && isModified && isReplacerFinished">
+      <div id="listPanel">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item font-weight-bold">Historial de modificaciones</li>
+          <li class="list-group-item" *ngFor="let documentmodification of documentmodifications; let index=index">
+            El documento con fecha: <b><i>{{documentmodification.documentByDocumentIdOld.createAt | dateformat}}</i></b>
+            fue modificado por el de:
+            <b><i>{{documentmodification.documentByDocumentIdNew.createAt | dateformat}}</i></b> por
+            el motivo: <b><i>{{documentmodification.description}}</i></b>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="!wrongVerification && !loading && isModified && isReplacerFinished"
+           class="alert alert-info mt-2 font-weight-bold"
+           role="alert">
+        <i class="fa fa-exclamation-circle custom-icon-danger"></i>
+        Puede ubicar el documento válido
+        <a [href]="urlLastDocumentResource" target="_blank" rel="noopener">Aquí!</a>
+      </div>
+
+      <div *ngIf="isReplacerFinished">
+        <!--        <div class="table-responsive mt-2 mb-2">-->
+        <!--          <table class="table">-->
+        <!--            <thead>-->
+        <!--            <tr>-->
+        <!--              <th scope="col">#</th>-->
+        <!--              <th scope="col">Reemplazado</th>-->
+        <!--              <th scope="col">Reemplazante</th>-->
+        <!--              <th scope="col">Razón de modificación</th>-->
+        <!--            </tr>-->
+        <!--            </thead>-->
+        <!--            <tbody>-->
+        <!--            <tr *ngFor="let job of documentmodifications; let index=index">-->
+        <!--              <th scope="row">{{index + 1}}</th>-->
+        <!--              <td>{{job.documentByDocumentIdOld.createAt | dateformat}}</td>-->
+        <!--              <td>{{job.documentByDocumentIdNew.createAt | dateformat}}</td>-->
+        <!--              <td>{{job.reason}}</td>-->
+        <!--            </tr>-->
+        <!--            </tbody>-->
+        <!--          </table>-->
+        <!--        </div>-->
+      </div>
+    </div>
+    <div *ngIf="showTableOperatorsInfo && !isCanceled && !isModified">
+      <div class="table-responsive mb-1">
+        <table class="table table-sm">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col"></th>
+            <th scope="col">Operación</th>
+            <th scope="col">Por</th>
+            <th scope="col">Entidad Certificadora</th>
+            <th scope="col">TSA</th>
+            <th scope="col">Fecha y hora cierta</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let operatorInfo of operatorsInfo; let index=index">
+            <th scope="row">{{index + 1}}</th>
+            <td class="custom-th">
+              <i class="fa fa-check-circle custom-icon-success"></i>
+            </td>
+            <td>{{operatorInfo.operationDescription}}</td>
+            <td>{{operatorInfo.operatorName}}</td>
+            <td>{{operatorInfo.issuerCertName}}</td>
+            <td>{{operatorInfo.tsa}}</td>
+            <td>{{operatorInfo.certainDateTime}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <pdf-viewer [src]="urlStream"
+                  [render-text]="true"
+                  [stick-to-page]="true"></pdf-viewer>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="loading"></app-loading>
+
+

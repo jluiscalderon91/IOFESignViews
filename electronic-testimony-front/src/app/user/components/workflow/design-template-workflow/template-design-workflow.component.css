@@ -1,0 +1,40 @@
+.custom-legend {
+  margin-top: 5px !important;
+}
+
+.delete-margin {
+  margin: 0px !important;
+}
+
+hr {
+  margin-top: 4px !important;
+  margin-bottom: 6px !important;
+}
+
+.width-th-1 {
+  width: 20px
+}
+
+.width-th-2 {
+  width: 330px
+}
+
+.width-th-3 {
+  width: 60px;
+}
+
+.width-th-4 {
+  width: 100px
+}
+
+.width-th-5 {
+  width: 90px
+}
+
+.width-th-6 {
+  width: 100px
+}
+
+.width-th-7 {
+  width: 420px
+}

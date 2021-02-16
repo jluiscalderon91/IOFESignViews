@@ -1,0 +1,60 @@
+pdf-viewer {
+  display: block;
+  height: 55vh;
+}
+
+.custom-link {
+  font-size: 13px;
+}
+
+.custom-background {
+  background-color: #f0f0f0;
+}
+
+.custom-float {
+  float: left;
+}
+
+.custom-container-right-padding {
+  padding: 0px;
+}
+
+.custom-container-right-padding-comment {
+  padding: 0px 15px 0px 0px;
+}
+
+.custom-padding-left {
+  padding-left: 0px;
+}
+
+.custom-combobox {
+  width: auto !important;
+}
+
+.custom-list-item {
+  padding: 4px 4px 4px 8px;
+}
+
+.custom-container-left-padding {
+  padding: 0px 4px 0px 12px;
+}
+
+.btn-save, .btn-cancel {
+  padding-bottom: 10px;
+}
+
+.btn-save {
+  padding-right: 1px;
+  padding-left: 0px;
+  padding-top: 0px;
+}
+
+.btn-cancel {
+  padding-left: 1px;
+  padding-right: 0px;
+  padding-top: 0px;
+}
+
+.custom-container-padding-right {
+  padding-right: 0px;
+}

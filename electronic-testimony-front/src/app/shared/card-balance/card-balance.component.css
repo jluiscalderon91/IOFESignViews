@@ -1,0 +1,13 @@
+.position{
+  float: left;
+}
+
+.custom-padding{
+  padding: 5px 10px 2px 5px;
+}
+
+/*.card {*/
+/*  margin: 0 auto; !* Added *!*/
+/*  float: none; !* Added *!*/
+/*  margin-bottom: 10px; !* Added *!*/
+/*}*/

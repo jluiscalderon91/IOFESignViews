@@ -1,0 +1,116 @@
+<form [formGroup]="signatureForm">
+  <div *ngIf="wrongRequestPerson && !loading" class="alert alert-info mt-2" role="alert">
+    <i class="fa fa-exclamation-circle fa-2x custom-icon-info"></i>
+    <b>
+      {{messageErrorRequest}}
+    </b>
+  </div>
+  <div class="card mt-2" *ngIf="!wrongRequestPerson && !wrongRequestDocument">
+    <h5 class="card-header">Firma de documentos</h5>
+    <div class="card-body custom-background">
+      <form>
+        <div class="row" *ngIf="!isInvited">
+          <div class="col-md-2 font-weight-bold">Empresa</div>
+          <div class="col font-weight-light">{{person._more.enterpriseTradeNameView}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 font-weight-bold">Flujo</div>
+          <div class="col-md-8 font-weight-light">{{document._more.workflowDescription}}</div>
+          <div class="col" *ngIf="electronicSignature">
+            <button type="button" align="flex-end"
+                    class="btn btn-sm btn-block {{signCompleted?'btn-outline-success':'btn-outline-primary'}}"
+                    [attr.disabled]="signCompleted ? '' : null"
+                    (click)="opensignElectronicallyModal(document)">
+              <i class="fa fa-stamp"></i> {{!signCompleted ? 'Firmar1' : 'Firmado1'}}
+            </button>
+          </div>
+          <div class="col" *ngIf="digitalSignature">
+            <a type="button"
+               class="btn btn-sm btn-block {{signCompleted?'disabled btn-outline-success':'btn-outline-primary'}}"
+               [href]="getUrlSign(document)"
+               *ngIf="!hasMultipleAttachments"
+               (click)="checkStatusOne2One(document)">
+              <span class="fa fa-signature" aria-hidden="true"></span> {{!signCompleted ? 'Firmar2' : 'Firmado2'}}</a>
+            <button type="button" align="flex-end"
+                    class="btn btn-sm btn-block {{signCompleted?'btn-outline-success':'btn-outline-primary'}}"
+                    *ngIf="hasMultipleAttachments"
+                    (click)="signBatchBy(document)"
+                    [attr.disabled]="signCompleted ? '' : null">
+              <i class="fa fa-signature"></i> {{!signCompleted ? 'Firmar3' : 'Firmado3'}}
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 font-weight-bold">Asunto</div>
+          <div class="col font-weight-light">{{document.subject}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 font-weight-bold">Nro. doc. firmante</div>
+          <div class="col font-weight-light">{{person.documentNumber}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 font-weight-bold">Señor(a)</div>
+          <div class="col-md-8 font-weight-light">{{person.fullname}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 font-weight-bold">Archivos adjuntos</div>
+          <div class="col-md-8 font-weight-light">
+            <a href="javascript:;" *ngFor="let resource of resourceList; let index=index"
+               (click)="setUrlDoc(resource)">{{resource.fileName}}; </a>
+          </div>
+        </div>
+        <div class="row" *ngIf="!document.closedStamping && !signCompleted && hasConfigRubric">
+          <div class="col-md-2 font-weight-bold">Rúbrica</div>
+          <div class="col-md-4 font-weight-light">
+            <div class="custom-file content-file">
+              <input type="file"
+                     class="custom-file-input"
+                     accept="image/jpeg, image/png"
+                     alife-file-to-base64
+                     id="customRubricFile"
+                     (change)="readSelectedRubric($event)"
+                     (onFileChanged)="changeStatus($event)">
+              <div class="custom-file-label">
+                <label for="customRubricFile">
+                  {{signatureForm.get('rubricFilename2Show').value ? signatureForm.get('rubricFilename2Show').value : 'Seleccione...'}}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div>
+              <img [src]="defaultRubricSrc" #rubricPic style="{{styleDimensionsRubric}}" alt="Rubric">
+            </div>
+          </div>
+          <div class="offset-md-2 col-md-2">
+            <button type="button"
+                    class="btn btn-sm btn-block btn-outline-success"
+                    [disabled]="disabledUpdateButton"
+                    (click)="updateRubric()">
+              <i class="fa fa-sync-alt"></i> Actualizar
+            </button>
+          </div>
+        </div>
+        <div class="row" *ngIf="document.closedStamping">
+          <div class="col-md-2 font-weight-bold">Nota</div>
+          <div class="col-md-8 font-weight-light">
+            Usted no está permitido cargar su rúbrica debido a que el documento ya fue firmado digitalmente.
+          </div>
+        </div>
+        <div class="row" *ngIf="!realoadingPdf">
+          <div class="col-md-12">
+            <div class="mt-2">
+              <pdf-viewer [src]="getUrlStream"
+                          [render-text]="true"
+                          [stick-to-page]="true"
+                          (on-progress)="onProgress($event)"
+                          (after-load-complete)="progressCompleted($event)"
+                          [original-size]="false"></pdf-viewer>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</form>
+<app-loading *ngIf="loading || loadingSign"></app-loading>

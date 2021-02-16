@@ -1,0 +1,105 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-inline">
+      <label class="font-weight-bold">Tipo de información:</label>
+      <select class="form-control ml-1 mr-3 mb-2"
+              [(ngModel)]="balanceType"
+              (change)="reloadBalanceInfo()">
+        <option *ngFor="let balanceType of balanceTypes" [ngValue]="balanceType.id">{{balanceType.name}}</option>
+      </select>
+    </div>
+    <!--    First table-->
+    <table class="table" *ngIf="headSelected">
+      <thead>
+      <tr class="text-center">
+        <th scope="col">#</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Destino</th>
+        <th scope="col">Cantidad asignada<br><small>{{coin}}</small></th>
+        <th scope="col">Total<br><small>{{coin}}</small></th>
+      </tr>
+      </thead>
+      <tbody class="text-center">
+      <tr *ngFor="let historicalbalanceallocation of historicalbalanceallocations; let index = index">
+        <th scope="row">{{(page.number * 10) + index + 1}}</th>
+        <td>
+          <span class="badge {{classBadge(historicalbalanceallocation)}}">
+            {{descriptionAssignmentType(historicalbalanceallocation, index)}}
+          </span>
+        </td>
+        <td>{{historicalbalanceallocation.createAt | datetimeformat}}</td>
+        <td>
+          {{enterpriseName(historicalbalanceallocation)}}
+        </td>
+        <td>
+          {{symbol(historicalbalanceallocation) + historicalbalanceallocation.quantity.toFixed(2)}}
+        </td>
+        <td>{{historicalbalanceallocation.balance.toFixed(2)}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <!--    Second table-->
+    <table class="table" *ngIf="!headSelected">
+      <thead>
+      <tr class="text-center">
+        <th scope="col">#</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Documento<br><small>(Asunto)</small></th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Precio<br><small>{{coin}}</small></th>
+        <th scope="col">Saldo<br><small>{{coin}}</small></th>
+      </tr>
+      </thead>
+      <tbody class="text-center">
+      <tr *ngFor="let detailbalanceallocation of detailbalanceallocations; let index = index">
+        <th scope="row">{{(page.number * 10) + index + 1}}</th>
+        <td>{{detailbalanceallocation.createAt | datetimeformat}}</td>
+        <td>{{subjectDocument(detailbalanceallocation)}}</td>
+        <td>{{serviceweight(detailbalanceallocation)}}</td>
+        <td>{{detailbalanceallocation.weight.toFixed(2)}}        </td>
+        <td>{{detailbalanceallocation.actualBalance.toFixed(2)}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <nav aria-label="Page navigatio" class="ml-3 mr-3">
+    <div class="row">
+      <div class="col-md-3">
+        Total de registros: {{historicalbalanceallocations.length + (page.number * page.size)}}
+        de {{page.totalElements}}
+      </div>
+      <div class="col-md-9">
+        <ul class="pagination justify-content-end text-center">
+          <li class="page-item btn-paged-ends {{page.number == 0 ? 'disabled' : ''}}">
+            <a class="page-link" tabindex="-1" aria-disabled="true"
+               (click)="loadBalanceallocations(enumPage.First)">Primera</a>
+          </li>
+          <li class="page-item btn-paged-medium text-center {{page.number == 0 ? 'disabled' : ''}}">
+            <a class="page-link" tabindex="-1" aria-disabled="true"
+               (click)="loadBalanceallocations(enumPage.Previous)">Anterior</a>
+          </li>
+          <li
+            class="page-item btn-paged-medium text-center {{page.number === (page.totalPages - 1) || page.totalPages === 0 ? 'disabled':''}}">
+            <a class="page-link" (click)="loadBalanceallocations(enumPage.Next)">Siguiente</a>
+          </li>
+          <li
+            class="page-item btn-paged-ends text-center {{page.number === (page.totalPages - 1) || page.totalPages === 0 ? 'disabled':''}}">
+            <a class="page-link btn-paged-ends" (click)="loadBalanceallocations(enumPage.Last)">Última</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="modal-footer">
+    <div class="row justify-content-end text-right">
+      <button type="button" class="btn btn-outline-primary" (click)="accept()">Aceptar</button>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="loading"></app-loading>

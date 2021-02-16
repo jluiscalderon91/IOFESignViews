@@ -1,0 +1,15 @@
+.uppercase {
+  text-transform: uppercase;
+}
+
+.btn-padding-left {
+  padding-left: 0px;
+  margin-left: 0;
+  border-left: 0;
+}
+
+.custom-input {
+  pointer-events: none;
+  cursor: default;
+  background-color: lightgray;
+}

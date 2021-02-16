@@ -1,0 +1,66 @@
+.custom-col-1 {
+  font-size: 14px;
+}
+
+.custom-col-2 {
+  font-size: 12px;
+}
+
+.custom-col-3 {
+  font-size: 13px;
+}
+
+.custom-col-1, .custom-col-2, .custom-col-3 {
+  max-height: 600px;
+}
+
+.custom-icon-success {
+  color: green;
+}
+
+.custom-icon-warn {
+  color: crimson;
+}
+
+.custom-icon-alert {
+  color: darkorange;
+}
+
+pdf-viewer {
+  display: block;
+  height: 60vh;
+  padding-top: 5px;
+}
+
+.custom-badge-visualized {
+  background-color: tomato;
+}
+
+.custom-badge-delivered {
+  background-color: dodgerblue;
+}
+
+.custom-badge-attended {
+  background-color: gold;
+}
+
+.scrollable {
+  height: 600px;
+  overflow-y: scroll;
+}
+
+.custom-badge-schedule-attach-delivery {
+  background-color: gray;
+}
+
+.custom-badge-attach-sent {
+  background-color: darkorange;
+}
+
+.custom-badge-error-sending-attach {
+  background-color: firebrick;
+}
+
+.custom-badge-schedule-attach-delivery, .custom-badge-attach-sent, .custom-badge-error-sending-attach {
+  color: white;
+}

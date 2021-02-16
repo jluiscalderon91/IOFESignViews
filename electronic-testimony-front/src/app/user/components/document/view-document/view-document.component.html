@@ -1,0 +1,134 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div id="listPanel" class="col-md-2 custom-col-1">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item font-weight-bold">Adjuntos</li>
+          <li class="list-group-item" *ngFor="let resource of resources; let index=index">
+            <a href="javascript:;" (click)="selectAttachment(resource)"> {{resource.fileName}}</a>
+          </li>
+        </ul>
+      </div>
+      <div id="previewPanel" class="col-md-7 custom-col-3 custom-middle-panel pl-0 pr-0">
+        <div *ngIf="!hasOperators && !loadingOperators && !verificationUnavailable" class="alert alert-info"
+             role="alert">
+          <div class="row">
+            <div class="col-md-1">
+              <i class="fa fa-exclamation-circle fa-2x"></i>
+            </div>
+            <div class="col-md-11">
+              El documento aún no cuenta con las firmas/revisiones necesarias para su verificación.
+            </div>
+          </div>
+        </div>
+          <div class="table-responsive" *ngIf="hasOperators">
+            <table class="table table-sm">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col"></th>
+                <th scope="col">Operación</th>
+                <th scope="col">Por</th>
+                <th scope="col">Entidad Certificadora</th>
+                <th scope="col">TSA</th>
+                <th scope="col">Fecha y hora cierta</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let operatorInfo of operatorsInfo; let index=index">
+                <th scope="row">{{index + 1}}</th>
+                <td class="custom-th">
+                  <i class="fa {{getClassOperatorInfo(operatorInfo)}}" (click)="showModalSignatureInfo(operatorInfo)"></i>
+                </td>
+                <td>{{operatorInfo.operationDescription}}</td>
+                <td>{{operatorInfo.operatorName}}</td>
+                <td>{{operatorInfo.issuerCertName}}</td>
+                <td>{{operatorInfo.tsa}}</td>
+                <td>{{operatorInfo.certainDateTime}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="background-color: #cccccc">
+            <pdf-viewer [src]="urlStream"
+                        [render-text]="true"
+                        [stick-to-page]="true"
+                        (on-progress)="onProgress()"
+                        (after-load-complete)="loadComplete()"
+                        [original-size]="false"></pdf-viewer>
+          </div>
+      </div>
+      <div id="traceabilityPanel" class="col-md-3 custom-col-3">
+        <div class="scrollable">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item font-weight-bold">
+              <div class="row">
+                Trazabilidad
+              </div>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-11">
+                  <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                    <input type="checkbox"
+                           class="custom-control-input"
+                           (change)="onItemChangeTraceability($event, TRACEABILITY_SIGNATURE_COMPONENT)"
+                           id="interactionSigningComponentCheckbox">
+                    <label class="custom-control-label" style="font-weight: normal!important;"
+                           for="interactionSigningComponentCheckbox">Ver interacción comp. firma</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-11">
+                  <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                    <input type="checkbox"
+                           class="custom-control-input"
+                           (change)="onItemChangeTraceability($event, TRACEABILITY_VISUALIZACION)"
+                           id="traceabilityVisualizationCheckbox">
+                    <label class="custom-control-label" style="font-weight: normal!important;"
+                           for="traceabilityVisualizationCheckbox">Ver trazab. de visualización</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-11">
+                  <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                    <input type="checkbox"
+                           class="custom-control-input"
+                           (change)="onItemChangeTraceability($event, TRACEABILITY_MAILING)"
+                           id="traceabilitySendToMailCheckbox">
+                    <label class="custom-control-label" style="font-weight: normal!important;"
+                           for="traceabilitySendToMailCheckbox">Ver trazab. de envío de adjuntos a correo</label>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item" *ngFor="let traceability of traceabilities; let index=index">
+              <span
+                class="badge {{getBadgeClassBy(traceability.stateId)}}">{{traceability._more.stateDescription}}</span>
+              {{traceability.createAt | dateformat}}<br>
+              {{traceability._more.fullnameOperator}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="col-2 ">
+          <div class="row justify-content-end">
+            <button type="button" class="btn btn-outline-primary w-75" (click)="accept()">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="loading || loadingOperators || loadingTraceability || loadingUpdateTraceability"></app-loading>

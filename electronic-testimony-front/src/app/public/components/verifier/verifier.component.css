@@ -1,0 +1,20 @@
+.custom-icon-success {
+  color: green;
+}
+
+.custom-icon-info {
+  color: crimson;
+}
+
+.custom-background {
+  background-color: whitesmoke;
+}
+
+pdf-viewer {
+  display: block;
+  height: 60vh;
+}
+
+.custom-background {
+  background-color: #f0f0f0;
+}

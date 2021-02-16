@@ -1,0 +1,18 @@
+.custom-label {
+  height: 30px;
+  vertical-align: middle;
+}
+
+.custom-span {
+  font-size: 2em;
+  padding-right: 5px;
+}
+
+.custom-div {
+  vertical-align: super;
+}
+
+.custom-container-right-padding {
+  padding-left: 0px;
+  padding-right: 2px;
+}

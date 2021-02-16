@@ -1,0 +1,12 @@
+.scrollable {
+  height: 600px;
+  overflow-y: scroll;
+}
+
+.custom-align-left{
+  text-align: left;
+}
+
+.custom-align-right{
+  text-align: right;
+}
