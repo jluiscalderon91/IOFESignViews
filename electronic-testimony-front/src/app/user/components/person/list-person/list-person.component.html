@@ -1,70 +1,100 @@
 <div class="mt-2">
   <div class="row">
-    <div class="col-md-10 w-100">
+    <div class="col-md-12">
       <h4>Personas</h4>
     </div>
-    <div class="col-md-2 text-right">
-      <button type="button" align="flex-end"
-              class="btn btn-outline-primary w-100"
-              *ngIf="hasAuthority('own:person:add')"
-              (click)="openModalAdd()">
-        <i class="fa fa-plus"></i> Agregar
-      </button>
+  </div>
+  <div class="row" style="padding-left: 10px;padding-right: 10px;">
+    <hr class="m-1" width="100%" style="display:inline-block" size="20">
+  </div>
+<div class="row">
+  <div class="col-md-2 text-right mt-2">
+    <button type="button" align="flex-end"
+            class="btn btn-outline-primary w-100"
+            *ngIf="hasAuthority('own:person:add')"
+            (click)="openModalAdd()">
+      <i class="fa fa-plus"></i> Agregar
+    </button>
+  </div>
+  <div class="col-md-2 text-right mt-2">
+    <button type="button"
+            class="btn btn-outline-primary w-100"
+            [disabled]="term2Search === undefined"
+            (click)="search()">Buscar
+    </button>
+  </div>
+</div>
+  <div class="row mt-2" style="margin-right: -10px;">
+    <div class=" col-md-4" *ngIf="hasRole(ROLE_SUPERADMIN)">
+      <div class=" form-group">
+        <label class="form-label" *ngIf="hasRole(ROLE_SUPERADMIN)">
+          <b>Partner:</b>
+        </label>
+        <select *ngIf="hasRole(ROLE_SUPERADMIN)"
+                class="form-control ml-1 mr-2"
+                [(ngModel)]="partnerSelected"
+                (ngModelChange)="reloadPeople0()">
+          <option *ngFor="let partner of partners" [ngValue]="partner">{{partner.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class=" col-md-4" *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)">
+      <div class=" form-group">
+        <label *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)">
+          <b>Empresa:</b>
+        </label>
+        <select *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)"
+                class="form-control ml-1 mr-2"
+                [(ngModel)]="enterpriseSelected"
+                (ngModelChange)="reloadPeople1()">
+          <option *ngFor="let enterprise of enterprises" [ngValue]="enterprise">{{enterprise.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class=" col-md-4" *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_ADMIN)">
+      <div class="form-group">
+        <label *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_ADMIN)">
+          <b>Tipo participante:</b>
+        </label>
+        <select *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_ADMIN)"
+                class="form-control ml-1 mr-2"
+                [(ngModel)]="participantTypeSelected"
+                (ngModelChange)="reloadPeople1()">
+          <option *ngFor="let participantType of participantTypes"
+                  [ngValue]="participantType">{{participantType.description}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-4" *ngIf="!isInvited">
+      <div class="form-group">
+        <label *ngIf="!isInvited">
+          <b>Rol:</b>
+        </label>
+        <select *ngIf="!isInvited"
+                class="form-control ml-1 mr-2"
+                [(ngModel)]="roleSelected"
+                (ngModelChange)="reloadPeople1()">
+          <option *ngFor="let rol of roles" [ngValue]="rol">{{rol.abbreviation}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>
+          <b>DNI/Nombres:</b>
+        </label>
+        <input type="text"
+               id="searchInput"
+               class="form-control ml-1 mr-2"
+               placeholder="Ingrese para buscar..."
+               [(ngModel)]="term2Search"
+               (keyup.enter)="search()">
+
+        </div>
     </div>
   </div>
 </div>
-<div class="form-inline mt-2">
-  <label *ngIf="hasRole(ROLE_SUPERADMIN)">
-    <b>Partner:</b>
-  </label>
-  <select *ngIf="hasRole(ROLE_SUPERADMIN)"
-          class="form-control ml-1 mr-2 custom-width-select"
-          [(ngModel)]="partnerSelected"
-          (ngModelChange)="reloadPeople0()">
-    <option *ngFor="let partner of partners" [ngValue]="partner">{{partner.name}}</option>
-  </select>
-  <label *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)">
-    <b>Empresa:</b>
-  </label>
-  <select *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_PARTNER)"
-          class="form-control ml-1 mr-2 custom-width-select"
-          [(ngModel)]="enterpriseSelected"
-          (ngModelChange)="reloadPeople1()">
-    <option *ngFor="let enterprise of enterprises" [ngValue]="enterprise">{{enterprise.name}}</option>
-  </select>
-  <label *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_ADMIN)">
-    <b>Tipo participante:</b>
-  </label>
-  <select *ngIf="hasRole(ROLE_SUPERADMIN) || hasRole(ROLE_ADMIN)"
-          class="form-control ml-1 mr-2"
-          [(ngModel)]="participantTypeSelected"
-          (ngModelChange)="reloadPeople1()">
-    <option *ngFor="let participantType of participantTypes"
-            [ngValue]="participantType">{{participantType.description}}</option>
-  </select>
-  <label *ngIf="!isInvited">
-    <b>Rol:</b>
-  </label>
-  <select *ngIf="!isInvited" class="form-control ml-1 mr-2"
-          [(ngModel)]="roleSelected"
-          (ngModelChange)="reloadPeople1()">
-    <option *ngFor="let rol of roles" [ngValue]="rol">{{rol.abbreviation}}</option>
-  </select>
-  <label>
-    <b>DNI/Nombres:</b>
-  </label>
-  <input type="text"
-         id="searchInput"
-         class="form-control ml-1 mr-2"
-         placeholder="Ingrese para buscar..."
-         [(ngModel)]="term2Search"
-         (keyup.enter)="search()">
-  <button type="button"
-          class="btn btn-outline-primary"
-          [disabled]="term2Search === undefined"
-          (click)="search()">Buscar
-  </button>
-</div>
+
 <div class="table-responsive mt-2 mb-2 custom-table-height">
   <table class="table-sm">
     <thead class="custom-font-size-table-header">

@@ -4,7 +4,7 @@ export class Constant {
   public static readonly DEV_MODE = 2;
   public static readonly QA_MODE = 3;
   public static readonly PROD_MODE = 4;
-  public static readonly MODE = Constant.DEV_MODE;
+  public static readonly MODE = Constant.LOCAL_MODE;
   // @ts-ignore
   public static readonly PROTOCOL = Constant.MODE === Constant.LOCAL_MODE ? 'http' : 'https';
   // @ts-ignore

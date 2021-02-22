@@ -21,6 +21,7 @@ import {RecoverPasswordThirdStepComponent} from './public/components/recover-pas
 import {GlobalConfigComponent} from './user/components/global-config/global-config.component';
 import {BuyBalanceComponent} from './user/components/balance/buy-balance/buy-balance.component';
 import {ViewBalanceComponent} from './user/components/balance/view-balance/view-balance.component';
+import {ListUserComponent} from './user/components/user/list-user/list-user.component';
 
 const APP_ROUTES: Routes = [
   {path: 'about', component: AboutComponent},
@@ -45,6 +46,7 @@ const APP_ROUTES: Routes = [
   {path: 'globalconfig', component: GlobalConfigComponent, canActivate: [AuthGuard]},
   {path: 'buy-balance', component: BuyBalanceComponent, canActivate: [AuthGuard]},
   {path: 'view-balance', component: ViewBalanceComponent, canActivate: [AuthGuard]},
+  {path: 'user', component: ListUserComponent, canActivate: [AuthGuard]},
   {path: '**', pathMatch: 'full', redirectTo: 'login'}
 ];
 

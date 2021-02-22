@@ -84,6 +84,8 @@ import {ViewBalanceComponent} from './user/components/balance/view-balance/view-
 import {SendToEmailComponent} from './user/components/document/send-to-email/send-to-email.component';
 import { SignDocumentInternalComponent } from './user/components/document/sign-document-internal/sign-document-internal.component';
 import { ModifyDocumentComponent } from './user/components/document/modify-document/modify-document.component';
+import { ListUserComponent } from './user/components/user/list-user/list-user.component';
+import { AddEditUserComponent } from './user/components/user/add-edit-user/add-edit-user.component';
 
 @NgModule({
   declarations: [
@@ -155,7 +157,9 @@ import { ModifyDocumentComponent } from './user/components/document/modify-docum
     ViewBalanceComponent,
     SendToEmailComponent,
     SignDocumentInternalComponent,
-    ModifyDocumentComponent
+    ModifyDocumentComponent,
+    ListUserComponent,
+    AddEditUserComponent
   ],
   imports: [
     BrowserModule,

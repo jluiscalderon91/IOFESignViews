@@ -17,6 +17,7 @@
           Administración
         </a>
         <div class="dropdown-menu sm-menu">
+          <a class="dropdown-item" [routerLink]="'user'" *ngIf="hasAuthority('own:user:get:enterprise')">Usuarios</a>
           <a class="dropdown-item" [routerLink]="'enterprise'"
              *ngIf="hasAuthority('own:enterprise:get:page')">Empresa</a>
           <a class="dropdown-item" [routerLink]="'job'" *ngIf="hasAuthority('own:job:get:enterprise')">Cargo</a>

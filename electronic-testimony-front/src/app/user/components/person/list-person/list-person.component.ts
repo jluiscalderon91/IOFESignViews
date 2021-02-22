@@ -24,7 +24,7 @@ import {Dialog} from '../../../../global/util/Dialog';
 @Component({
   selector: 'app-list-person',
   templateUrl: './list-person.component.html',
-  styleUrls: ['./list-person.component.css']
+  styleUrls: ['./list-person.component.css'],
 })
 export class ListPersonComponent implements OnInit {
   public person: Person;

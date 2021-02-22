@@ -100,6 +100,7 @@ export class ListDocumentComponent implements OnInit, OnDestroy {
               private personService: PersonService,
               private router: Router,
               private mailtemplateService: MailtemplateService) {
+
     Dialog.createInstance(modalService);
     this.setDefaultData();
     this.loadDocuments(Page.First);
@@ -186,6 +187,7 @@ export class ListDocumentComponent implements OnInit, OnDestroy {
       case Page.First:
         if (this.hasRole(this.ROLE_PARTNER) || this.hasRole(this.ROLE_ADMIN) || this.hasRole(this.ROLE_SUPERVISOR)) {
           this.documentUrl = Constant.ROOT_API_V1
+
             .concat('/enterprises/')
             .concat(String(this.enterpriseIdSelected))
             .concat('/workflows/')

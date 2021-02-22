@@ -7,4 +7,5 @@ export class User {
   sentCreds: number;
   sentCredsAt: number;
   active: number;
+  enterpriseId: number;
 }
